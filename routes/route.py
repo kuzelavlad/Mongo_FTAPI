@@ -10,14 +10,21 @@ router = APIRouter()
 # GET Request Method
 @router.get("/")
 async def get_users():
-    users = list_serial(collection_name.find())
-    return users
+    try:
+        users = list_serial(collection_name.find())
+        return {"users": users}
+    except Exception as e:
+        return print({"error": str(e)})
 
 
 # POST Request Method
 @router.post("/")
 async def create_user(user: User):
-    collection_name.insert_one(dict(user))
+    try:
+        result = collection_name.insert_one(dict(user))
+        return print({"inserted_id": str(result.inserted_id)})
+    except Exception as e:
+        return print({"error": str(e)})
 
 
 # PUT Request Method
